@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.MapsView"
+                xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core" 
+             xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"   
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+			 Title="Cart">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="TitleMapstyle" 
+                   TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Black" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="Margin"
+                        Value="0, 12" />
+            </Style>
+
+            <Style x:Key="MapButtonStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid 
+        BackgroundColor="{StaticResource BackgroundColor}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+            
+            <Grid
+                Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid
+                        Grid.Row="0">
+                        <Label
+                            Text="LOCATION BRANDS"
+                            Style="{StaticResource TitleMapstyle}"/>
+                    </Grid>
+                    <ScrollView
+                        Grid.Row="1">
+                        <StackLayout>
+                            
+                            <ListView  
+                                ItemsSource="{Binding LocationBrands}"                              
+                                HeightRequest="{Binding LocationBrands.Count, Converter={StaticResource ItemsToHeightConverter}}"
+                                HasUnevenRows="True"
+                                SeparatorVisibility="None"
+                                VerticalOptions="FillAndExpand"
+                                CachingStrategy="RecycleElement">
+                                <ListView.Behaviors>
+                                    <behaviors:EventToCommandBehavior
+										EventName="ItemTapped"
+										EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"
+										Command="{Binding MapDetailsCommand}" />
+                                </ListView.Behaviors>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <templates:MapViewTemplate/>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>                           
+                        </StackLayout>
+                    </ScrollView>
+                </Grid>
+            </Grid>
+            
+            <Grid
+                Grid.Row="1"           
+                BackgroundColor="{StaticResource LightGreenColor}"
+                Padding="0" 
+                ColumnSpacing="0" 
+                RowSpacing="0">
+                <Label       
+                    Text="ADD MAP" 
+                    Style="{StaticResource MapButtonStyle}"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer            
+                        Command="{Binding AddMapCommand}"  
+                        NumberOfTapsRequired="1" />
+                </Grid.GestureRecognizers>
+            </Grid>
+        </Grid>
+        
+    </Grid>
+</ContentPage>

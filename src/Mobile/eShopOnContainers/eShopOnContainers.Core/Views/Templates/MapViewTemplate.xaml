@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.Templates.MapViewTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="BrandTitleStyle" 
+               TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                        Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                        Value="{StaticResource MediumSize}" />
+                <Setter Property="TextColor"
+                        Value="Gray" />
+            </Style>
+
+            <Style x:Key="MapContentStyle" 
+               TargetType="{x:Type Label}"
+                   BasedOn="{StaticResource BrandTitleStyle}">
+                <Setter Property="TextColor"
+                        Value="Black" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <Grid
+            BackgroundColor="{StaticResource BackgroundColor}"
+            Padding="0"
+            Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0" 
+                Text="{Binding Brand}" 
+                Style="{StaticResource BrandTitleStyle}"/>
+            <Label 
+                Grid.Row="1" 
+                Text="{Binding Latitude}" 
+                Style="{StaticResource MapContentStyle}"/>
+            <Label 
+                Grid.Row="2" 
+                Text="{Binding Longitude}" 
+                Style="{StaticResource MapContentStyle}"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

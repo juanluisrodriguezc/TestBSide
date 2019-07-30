@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="eShopOnContainers.Core.Views.CatalogAddView"
+             xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
+             xmlns:animations="clr-namespace:eShopOnContainers.Core.Animations;assembly=eShopOnContainers.Core"
+             xmlns:converters="clr-namespace:eShopOnContainers.Core.Converters;assembly=eShopOnContainers.Core"
+             xmlns:triggers="clr-namespace:eShopOnContainers.Core.Triggers;assembly=eShopOnContainers.Core"
+             xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core"
+			 viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="Add Catalog">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter" />
+
+            <Style x:Key="HeaderLabelStyle"
+                TargetType="{x:Type Label}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="FontSize"
+                    Value="{StaticResource LittleSize}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource GreenColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Start" />
+            </Style>
+
+            <Style x:Key="CatalogImageStyle" 
+                   TargetType="{x:Type Image}">
+                <Setter Property="Aspect" 
+                        Value="AspectFit" />
+                <Setter Property="VerticalOptions" 
+                        Value="Start" />
+                <Setter Property="Margin" 
+                        Value="12" />
+            </Style>
+
+            <Style x:Key="CatalogPickerStyle"  
+             TargetType="{x:Type Picker}">
+                <Setter Property="HeightRequest"
+                Value="48" />
+                <Setter Property="BackgroundColor"
+                Value="Transparent" />
+                <Setter Property="HorizontalOptions"
+                Value="Fill" />
+                <Setter Property="VerticalOptions"
+                Value="Fill" />
+                <Setter Property="Margin"                
+                Value="0, 2" />
+            </Style>
+            
+            <Style x:Key="AddButtonStyle"
+                TargetType="{x:Type Button}">
+                <Setter Property="FontFamily"
+                    Value="{StaticResource MontserratRegular}" />
+                <Setter Property="TextColor"
+                    Value="{StaticResource WhiteColor}" />
+                <Setter Property="HorizontalOptions"
+                    Value="Center" />
+                <Setter Property="VerticalOptions"
+                    Value="Center" />
+            </Style>
+
+           
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid
+      BackgroundColor="{StaticResource BackgroundColor}">
+        <ScrollView>
+            <StackLayout   
+                Grid.Row="0"
+                Margin="24">
+
+                <Label
+                  Text="Name"
+                  Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry                  
+                  Text="{Binding Name.Value, Mode=TwoWay}">
+                    <Entry.Style>
+                        <OnPlatform x:TypeArguments="Style">
+                            <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                            <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                        </OnPlatform>
+                    </Entry.Style>
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateNameCommand}" />
+                    </Entry.Behaviors>
+                    <Entry.Triggers>
+                        <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Name.IsValid}"
+							Value="False">
+                            <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Label 
+					Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                <Label
+                  Text="Description"
+                  Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry                  
+                  Text="{Binding Description.Value, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidateDescriptionCommand}" />
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Description.IsValid}"
+							Value="False">
+                        <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+                <Label 
+					Text="{Binding Description.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+                
+                <Label
+                  Text="Price"
+                  Style="{StaticResource HeaderLabelStyle}"/>
+                <Entry Keyboard="Numeric"                
+                  Text="{Binding Price.Value, Mode=TwoWay}">
+                <Entry.Style>
+                    <OnPlatform x:TypeArguments="Style">
+                        <On Platform="iOS, Android" Value="{StaticResource EntryStyle}" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="{StaticResource UwpEntryStyle}" />
+                    </OnPlatform>
+                </Entry.Style>
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior
+							EventName="TextChanged"
+							Command="{Binding ValidatePriceCommand}" />
+                </Entry.Behaviors>
+                <Entry.Triggers>
+                    <DataTrigger 
+							TargetType="Entry"
+							Binding="{Binding Price.IsValid}"
+							Value="False">
+                        <Setter Property="behaviors:LineColorBehavior.LineColor" Value="{StaticResource ErrorColor}" />
+                    </DataTrigger>
+                </Entry.Triggers>
+            </Entry>
+                <Label 
+					Text="{Binding Price.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					Style="{StaticResource ValidationErrorLabelStyle}" />
+
+                <Image
+                        Source="{Binding CatalogItem.PictureUri, Converter={StaticResource ImageConverter}}"        
+                        Style="{StaticResource CatalogImageStyle}"/>
+
+                <Picker
+                    Title="BRAND" 
+                    ItemsSource="{Binding Brands}"
+                    SelectedItem="{Binding Brand, Mode=TwoWay}"
+                    Style="{StaticResource CatalogPickerStyle}">
+                    <Picker.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="iOS, Android" Value="48" />
+                            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+                        </OnPlatform>
+                    </Picker.HeightRequest>
+                </Picker>
+
+                <Picker
+                    Title="TYPE"
+                    ItemsSource="{Binding Types}"
+                    SelectedItem="{Binding Type, Mode=TwoWay}"
+                    Style="{StaticResource CatalogPickerStyle}">
+                    <Picker.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="iOS, Android" Value="48" />
+                            <On Platform="UWP, WinRT, WinPhone" Value="36" />
+                        </OnPlatform>
+                    </Picker.HeightRequest>
+                </Picker>
+
+                <Button 
+                    Text="ADD CATALOG" 
+                    BackgroundColor="{StaticResource LightGreenColor}"
+                    Style="{StaticResource AddButtonStyle}" 
+                    Command="{Binding AddCatalogCommand}"
+                    IsEnabled="{Binding IsValidAll, Mode=TwoWay}"/>
+
+            </StackLayout>
+
+        </ScrollView>
+
+        <!-- INDICATOR -->
+        <ActivityIndicator      
+          Color="{StaticResource LightGreenColor}"
+          IsRunning="{Binding IsBusy}"
+          IsVisible="{Binding IsBusy}"
+          VerticalOptions="Center"
+          HorizontalOptions="Center">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform x:TypeArguments="x:Double">
+                    <On Platform="iOS, Android" Value="100" />
+                    <On Platform="UWP, WinRT, WinPhone" Value="400" />
+                </OnPlatform>
+            </ActivityIndicator.WidthRequest>
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>
