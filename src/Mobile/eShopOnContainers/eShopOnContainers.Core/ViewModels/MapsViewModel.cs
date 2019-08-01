@@ -23,12 +23,6 @@ namespace eShopOnContainers.Core.ViewModels
         private ISettingsService _settingsService;
         private ILocationService _locationService;
 
-        public MapsViewModel(ISettingsService settingsService, ILocationService locationService)
-        {
-            _settingsService = settingsService;
-            _locationService = locationService;
-        }
-      
         public ObservableCollection<LocationBrand> LocationBrands
         {
             get { return _locationBrands; }
@@ -38,14 +32,7 @@ namespace eShopOnContainers.Core.ViewModels
                 RaisePropertyChanged(() => LocationBrands);
             }
         }
-        
-        public ICommand MapDetailsCommand => new Command<LocationBrand>((item) => MapDetails(item));
-
-        private void MapDetails(LocationBrand item)
-        {
-            NavigationService.NavigateToAsync<MapsDetailsViewModel>(item);
-        }
-
+                
         public ICommand AddMapCommand => new Command(AddMap);
 
         private void AddMap()
@@ -53,10 +40,15 @@ namespace eShopOnContainers.Core.ViewModels
             NavigationService.NavigateToAsync<MapsAddViewModel>();
         }
 
+        public MapsViewModel(ISettingsService settingsService, ILocationService locationService)
+        {
+            _settingsService = settingsService;
+            _locationService = locationService;
+        }
+
         public override async Task InitializeAsync(object navigationData)
         {
             LocationBrands = await _locationService.GetCatalogLocationBrandAsync();
-            LocationBrands.Add((LocationBrand)navigationData);
 
             MessagingCenter.Unsubscribe<MapsAddViewModel, LocationBrand>(this, MessageKeys.AddMapBrand);
             MessagingCenter.Subscribe<MapsAddViewModel, LocationBrand>(this, MessageKeys.AddMapBrand, async (sender, arg) =>

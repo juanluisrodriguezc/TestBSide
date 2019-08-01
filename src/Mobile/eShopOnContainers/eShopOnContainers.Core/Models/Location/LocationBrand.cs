@@ -10,6 +10,6 @@ namespace eShopOnContainers.Core.Models.Location
         public double Latitude { get; set; }
         public int IdBrand { get; set; }
         public string Brand { get; set; }
-        public string ColorPin { get; set; }
+        public string Description { get; set; }
     }
 }

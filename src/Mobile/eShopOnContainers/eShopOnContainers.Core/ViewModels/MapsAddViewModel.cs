@@ -24,6 +24,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private ValidatableObject<string> _latitude;
         private ValidatableObject<string> _longitude;
+        private ValidatableObject<string> _description;
 
         private bool _isValidAll;
 
@@ -73,6 +74,19 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
+        public ValidatableObject<string> Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+                RaisePropertyChanged(() => Description);
+            }
+        }
+
         public bool IsValidAll
         {
             get { return _isValidAll; }
@@ -87,6 +101,8 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand ValidateLongitudeCommand => new Command(() => ValidateLongitude());
 
+        public ICommand ValidateDescriptionCommand => new Command(() => ValidateDescription());
+
         public ICommand AddMapsCommand => new Command(() => AddMap());
 
         public MapsAddViewModel(ISettingsService settingsService, ICatalogService catalogService)
@@ -98,6 +114,8 @@ namespace eShopOnContainers.Core.ViewModels
             _latitude.IsValid = false;
             _longitude = new ValidatableObject<string>();
             _longitude.IsValid = false;
+            _description = new ValidatableObject<string>();
+            _description.IsValid = false;
 
             _isValidAll = false;
 
@@ -112,7 +130,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void Validate()
         {
-            IsValidAll = Latitude.IsValid && Longitude.IsValid;
+            IsValidAll = Latitude.IsValid && Longitude.IsValid & Description.IsValid;
         }
 
         private bool ValidateLatitude()
@@ -129,6 +147,13 @@ namespace eShopOnContainers.Core.ViewModels
             return _longitude.Validate();
         }
 
+        private bool ValidateDescription()
+        {
+            _description.Validate();
+            Validate();
+            return _description.Validate();
+        }
+
         private void AddValidations()
         {
             _latitude.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A latitude is required." });
@@ -136,6 +161,8 @@ namespace eShopOnContainers.Core.ViewModels
 
             _longitude.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A longitude is required." });
             _longitude.Validations.Add(new IsDecimalRule<string> { ValidationMessage = "The longitude needs to be a decimal type value" });
+
+            _description.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "A description is required." });
         }
 
         private void AddMap()
@@ -147,13 +174,16 @@ namespace eShopOnContainers.Core.ViewModels
                     Latitude = double.Parse(Latitude.Value),
                     Longitude = double.Parse(Longitude.Value),
                     IdBrand = Brand.Id,
-                    Brand = Brand.Brand
+                    Brand = Brand.Brand,
+                    Description = Description.Value
                 };
+
+                MessagingCenter.Send(this, MessageKeys.AddMapBrand, locationBrand);
 
                 DialogService.ShowAlertAsync("Map Added", "Maps", "OK");
 
-                //Redirect to MainPage
-                NavigationService.NavigateToAsync<MapsViewModel>(locationBrand);
+                //Redirect to Maps
+                NavigationService.NavigateToAsync<MainViewModel>();
             }
         }
     }

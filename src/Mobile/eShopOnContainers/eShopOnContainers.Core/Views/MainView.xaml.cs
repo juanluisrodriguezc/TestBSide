@@ -31,6 +31,9 @@ namespace eShopOnContainers.Core.Views
                     case 3:
                         CurrentPage = CampaignView;
                         break;
+                    case 4:
+                        CurrentPage = MapsView;
+                        break;
                 }
             });
 
@@ -38,6 +41,7 @@ namespace eShopOnContainers.Core.Views
 			await ((BasketViewModel)BasketView.BindingContext).InitializeAsync(null);
 			await ((ProfileViewModel)ProfileView.BindingContext).InitializeAsync(null);
             await ((CampaignViewModel)CampaignView.BindingContext).InitializeAsync(null);
+            await ((MapsViewModel)MapsView.BindingContext).InitializeAsync(null);
         }
 
         protected override async void OnCurrentPageChanged()
@@ -55,6 +59,11 @@ namespace eShopOnContainers.Core.Views
                 await (CampaignView.BindingContext as ViewModelBase).InitializeAsync(null);
             }
             else if (CurrentPage is ProfileView)
+            {
+                // Force profile view refresh every time we access it
+                await (ProfileView.BindingContext as ViewModelBase).InitializeAsync(null);
+            }
+            else if (CurrentPage is MapsView)
             {
                 // Force profile view refresh every time we access it
                 await (ProfileView.BindingContext as ViewModelBase).InitializeAsync(null);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Maps;
 using Xamarin.Forms.Xaml;
 
 namespace eShopOnContainers.Core.Views
@@ -14,7 +15,13 @@ namespace eShopOnContainers.Core.Views
 	{
 		public MapsView ()
 		{
-			InitializeComponent ();
-		}
-	}
+            InitializeComponent();          
+        }
+
+        protected override void OnAppearing()
+        {
+            Map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(19.42847, -99.12766), Distance.FromMiles(10)));
+            base.OnAppearing();
+        }
+    }
 }

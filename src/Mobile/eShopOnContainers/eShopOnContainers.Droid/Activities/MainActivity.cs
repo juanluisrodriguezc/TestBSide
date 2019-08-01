@@ -33,6 +33,7 @@ namespace eShopOnContainers.Droid.Activities
             SupportActionBar.SetDisplayShowTitleEnabled(false);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            Xamarin.FormsMaps.Init(this, bundle);
             UserDialogs.Init(this);
             CachedImageRenderer.Init(false);
             LoadApplication(new App());

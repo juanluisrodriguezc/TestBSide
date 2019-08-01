@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="eShopOnContainers.Core.Views.MapsView"
-                xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
+             xmlns:viewModelBase="clr-namespace:eShopOnContainers.Core.ViewModels.Base;assembly=eShopOnContainers.Core"
              xmlns:behaviors="clr-namespace:eShopOnContainers.Core.Behaviors;assembly=eShopOnContainers.Core" 
              xmlns:templates="clr-namespace:eShopOnContainers.Core.Views.Templates;assembly=eShopOnContainers.Core"   
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              viewModelBase:ViewModelLocator.AutoWireViewModel="true"
 			 Title="Cart">
     <ContentPage.Resources>
@@ -61,33 +62,18 @@
                             Text="LOCATION BRANDS"
                             Style="{StaticResource TitleMapstyle}"/>
                     </Grid>
-                    <ScrollView
+
+                    <Grid
                         Grid.Row="1">
-                        <StackLayout>
-                            
-                            <ListView  
-                                ItemsSource="{Binding LocationBrands}"                              
-                                HeightRequest="{Binding LocationBrands.Count, Converter={StaticResource ItemsToHeightConverter}}"
-                                HasUnevenRows="True"
-                                SeparatorVisibility="None"
-                                VerticalOptions="FillAndExpand"
-                                CachingStrategy="RecycleElement">
-                                <ListView.Behaviors>
-                                    <behaviors:EventToCommandBehavior
-										EventName="ItemTapped"
-										EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"
-										Command="{Binding MapDetailsCommand}" />
-                                </ListView.Behaviors>
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <templates:MapViewTemplate/>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>                           
-                        </StackLayout>
-                    </ScrollView>
+                        <maps:Map
+                            x:Name="Map"
+                            HorizontalOptions="FillAndExpand" 
+                            VerticalOptions="FillAndExpand">                            
+                            <maps:Map.Behaviors>
+                                <behaviors:MapBehavior ItemsSource="{Binding LocationBrands}"></behaviors:MapBehavior>
+                            </maps:Map.Behaviors>                            
+                        </maps:Map>
+                    </Grid>
                 </Grid>
             </Grid>
             

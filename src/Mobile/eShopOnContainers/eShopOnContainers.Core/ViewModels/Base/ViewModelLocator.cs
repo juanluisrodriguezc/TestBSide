@@ -56,7 +56,6 @@ namespace eShopOnContainers.Core.ViewModels.Base
             _container.Register<CatalogDetailsViewModel>();
             _container.Register<CatalogAddViewModel>();
             _container.Register<MapsViewModel>();
-            _container.Register<MapsDetailsViewModel>();
             _container.Register<MapsAddViewModel>();
 
             // Services - by default, TinyIoC will register interface registrations as singletons.
